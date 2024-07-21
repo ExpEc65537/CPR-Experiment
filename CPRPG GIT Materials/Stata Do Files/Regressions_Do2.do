@@ -16,6 +16,11 @@ replace timegroup=1 if Period<6
 replace timegroup=2 if Period>5 & Period<11
 replace timegroup=3 if Period>10
 
+replace TimeSubmit=180-TimeSubmit
+bysort Session Period: egen maxtime=max(TimeSubmit)
+gen lagmaxtime=maxtime[_n-1]
+gen lagmaxtimetreat=lagmaxtime*spillover
+
 
 xtset subjectid Period
 gen lag1sumx=sumx[_n-1]
